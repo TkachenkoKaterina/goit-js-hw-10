@@ -1,17 +1,14 @@
 import './css/styles.css';
 import { fetchCountries } from './/fetchCountries';
-
+import Notiflix from 'notiflix';
+import 'notiflix/dist/notiflix-3.2.5.min.css';
 var _ = require('lodash');
 var debounce = require('lodash.debounce');
-
 const DEBOUNCE_DELAY = 300;
 
 const inputRef = document.querySelector('#search-box');
 const ulRef = document.querySelector('.country-list');
 const divTef = document.querySelector('.country-info');
-console.log(inputRef);
-console.log(ulRef);
-console.log(divTef);
 
 inputRef.addEventListener(
   'input',
@@ -20,24 +17,23 @@ inputRef.addEventListener(
       console.log('пусто');
       return;
     }
-
     clearInput();
-
     const inputRefData = inputRef.value.trim();
     console.log(inputRefData.value);
-
     fetchCountries(inputRefData)
       .then(renderCountriesList)
-      .catch(error => console.log(error));
+      .catch(error =>
+        Notiflix.Notify.failure('Oops, there is no country with that name')
+      );
   }, DEBOUNCE_DELAY)
 );
 
 function renderCountriesList(countries) {
-  console.log(countries);
-  console.log(inputRef.value);
-
   if (countries.length > 10) {
-    console.log('Too much');
+    Notiflix.Notify.info(
+      'Too many matches found. Please enter a more specific name.'
+    );
+    // console.log('Too many matches found. Please enter a more specific name.');
   } else if ((countries.length = 1)) {
     divTef.innerHTML = renderCountryInfo(countries[0]);
   } else {
