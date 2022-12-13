@@ -14,12 +14,13 @@ inputRef.addEventListener(
   'input',
   _.debounce(() => {
     if (inputRef.value === '') {
-      console.log('пусто');
+      clearInput();
       return;
     }
-    clearInput();
+
     const inputRefData = inputRef.value.trim();
-    console.log(inputRefData.value);
+    console.log(inputRefData);
+
     fetchCountries(inputRefData)
       .then(renderCountriesList)
       .catch(error =>
@@ -29,39 +30,48 @@ inputRef.addEventListener(
 );
 
 function renderCountriesList(countries) {
+  console.log(countries);
   if (countries.length > 10) {
+    ulRef.innerHTML = '';
     Notiflix.Notify.info(
       'Too many matches found. Please enter a more specific name.'
     );
-    // console.log('Too many matches found. Please enter a more specific name.');
-  } else if ((countries.length = 1)) {
+  } else if (countries.length === 1) {
     divTef.innerHTML = renderCountryInfo(countries[0]);
-  } else {
+    ulRef.innerHTML = '';
+  } else if (countries.length > 2 && countries.length < 10) {
+    console.log(countries);
     const markupCountryList = countries
       .map(country => renderCountryList(country))
       .join('');
+    divTef.innerHTML = '';
     ulRef.insertAdjacentHTML('beforeend', markupCountryList);
   }
 }
 
 function renderCountryInfo({ name, capital, population, flags, languages }) {
   return `
-      <li><img src="${flags.svg}" alt="${name} flag" width="40" /><span>${name}</span></li>
+      <li><img src="${flags.svg}" alt="${
+    name.official
+  } flag" width="40" /><span>${name.official}</span></li>
       <li class="country-list__item"><span>Capital:</span>${capital}</li>
       <li class="country-list__item"><span>Population:</span>${population}</li>
-      <li class="country-list__item"><span>Languages:</span>${languages}</li>
+      <li class="country-list__item"><span>Languages:</span>${Object.values(
+        languages
+      ).join()}</li>
     `;
 }
 
 function renderCountryList({ name, flags }) {
   return `
-      <img src="${flags.svg}" alt="${name} flag" width="40" />
+      <img src="${flags.svg}" alt="${name.official} flag" width="40" />
       <h>${name.official}</h>
     `;
 }
 
 function clearInput() {
   if (inputRef.value === '') {
+    console.log(inputRef.value);
     ulRef.innerHTML = '';
     divTef.innerHTML = '';
   }
