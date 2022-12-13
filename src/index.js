@@ -8,7 +8,7 @@ const DEBOUNCE_DELAY = 300;
 
 const inputRef = document.querySelector('#search-box');
 const ulRef = document.querySelector('.country-list');
-const divTef = document.querySelector('.country-info');
+const divRef = document.querySelector('.country-info');
 
 inputRef.addEventListener(
   'input',
@@ -37,14 +37,14 @@ function renderCountriesList(countries) {
       'Too many matches found. Please enter a more specific name.'
     );
   } else if (countries.length === 1) {
-    divTef.innerHTML = renderCountryInfo(countries[0]);
+    divRef.innerHTML = renderCountryInfo(countries[0]);
     ulRef.innerHTML = '';
   } else if (countries.length > 2 && countries.length < 10) {
     console.log(countries);
     const markupCountryList = countries
       .map(country => renderCountryList(country))
       .join('');
-    divTef.innerHTML = '';
+    divRef.innerHTML = '';
     ulRef.insertAdjacentHTML('beforeend', markupCountryList);
   }
 }
@@ -53,7 +53,7 @@ function renderCountryInfo({ name, capital, population, flags, languages }) {
   return `
       <li><img src="${flags.svg}" alt="${
     name.official
-  } flag" width="40" /><span>${name.official}</span></li>
+  } flag" width="60" /><span>${name.official}</span></li>
       <li class="country-list__item"><span>Capital:</span>${capital}</li>
       <li class="country-list__item"><span>Population:</span>${population}</li>
       <li class="country-list__item"><span>Languages:</span>${Object.values(
@@ -64,7 +64,7 @@ function renderCountryInfo({ name, capital, population, flags, languages }) {
 
 function renderCountryList({ name, flags }) {
   return `
-      <img src="${flags.svg}" alt="${name.official} flag" width="40" />
+      <img src="${flags.svg}" alt="${name.official} flag" width="60" />
       <h>${name.official}</h>
     `;
 }
@@ -73,6 +73,18 @@ function clearInput() {
   if (inputRef.value === '') {
     console.log(inputRef.value);
     ulRef.innerHTML = '';
-    divTef.innerHTML = '';
+    divRef.innerHTML = '';
   }
 }
+
+ulRef.style.listStyleType = 'none';
+ulRef.style.display = 'flex';
+ulRef.style.justifyContent = 'flex-start';
+ulRef.style.fontSize = '30px';
+ulRef.style.gap = '20px';
+ulRef.style.alignItems = 'center';
+
+divRef.style.listStyleType = 'none';
+divRef.style.fontSize = '30px';
+divRef.style.gap = '20px';
+divRef.style.alignItems = 'center';
