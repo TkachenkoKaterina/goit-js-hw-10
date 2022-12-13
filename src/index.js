@@ -31,6 +31,7 @@ inputRef.addEventListener(
 
 function renderCountriesList(countries) {
   console.log(countries);
+  clearInput();
   if (countries.length > 10) {
     ulRef.innerHTML = '';
     Notiflix.Notify.info(
@@ -70,11 +71,13 @@ function renderCountryList({ name, flags }) {
 }
 
 function clearInput() {
-  if (inputRef.value === '') {
-    console.log(inputRef.value);
-    ulRef.innerHTML = '';
-    divRef.innerHTML = '';
-  }
+  // if (inputRef.value === '') {
+  //   console.log(inputRef.value);
+  //   ulRef.innerHTML = '';
+  //   divRef.innerHTML = '';
+  // }
+  ulRef.innerHTML = '';
+  divRef.innerHTML = '';
 }
 
 ulRef.style.listStyleType = 'none';
@@ -83,6 +86,7 @@ ulRef.style.justifyContent = 'flex-start';
 ulRef.style.fontSize = '30px';
 ulRef.style.gap = '20px';
 ulRef.style.alignItems = 'center';
+ulRef.style.flexWrap = 'wrap';
 
 divRef.style.listStyleType = 'none';
 divRef.style.fontSize = '30px';
